@@ -1,3 +1,4 @@
+import certifi
 from pymongo import MongoClient
 from pymongo.database import Database
 
@@ -10,7 +11,11 @@ _db: Database | None = None
 def get_client() -> MongoClient:
     global _client
     if _client is None:
-        _client = MongoClient(config.MONGO_URL, serverSelectionTimeoutMS=5000)
+        _client = MongoClient(
+            config.MONGO_URL,
+            serverSelectionTimeoutMS=5000,
+            tlsCAFile=certifi.where(),
+        )
     return _client
 
 

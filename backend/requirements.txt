@@ -4,3 +4,4 @@ pymongo>=4.8
 pydantic>=2.7
 python-dotenv>=1.0
 google-genai>=1.0
+certifi
