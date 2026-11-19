@@ -111,7 +111,7 @@ def _general_suggestions(n_primary: int = 1, n_additional: int = 4) -> tuple[lis
         general = sorted([a for a in acts if a.get("is_active")],
                          key=lambda a: a.get("priority", 99))
     picks = general[: n_primary + n_additional]
-    primary = [{**picks[0], "reason": GENERAL_REASON}] if picks else None
+    primary = {**picks[0], "reason": GENERAL_REASON} if picks else None
     additional = [{**p, "reason": GENERAL_REASON} for p in picks[1:]]
     return ([primary] if primary else []), additional
 
@@ -156,6 +156,8 @@ def get_recommendations() -> dict:
 
 
 def _store_result(primary: dict | None, additional_ids: list[str], personalized: bool) -> None:
+    if isinstance(primary, list):
+        primary = primary[0] if primary else None
     get_db().recommendation_results.insert_one({
         "result_id": str(uuid.uuid4()),
         "user_id": config.DEMO_USER_ID,
